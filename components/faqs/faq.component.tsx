@@ -15,7 +15,7 @@ export const Faq: FC<Props> = ({ faqData }) => {
         <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
-            id={faqData.id + ""}
+            id={faqData.id.toString()}
         >
             <Typography>{faqData.question}</Typography>
         </AccordionSummary>
