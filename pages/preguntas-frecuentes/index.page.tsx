@@ -1,5 +1,5 @@
 import { FaqType } from "interface/faqs"
-import { NextPage } from "next"
+import { GetStaticProps, NextPage } from "next"
 import { Faq } from "dh-marvel/components/faqs/faq.component"
 import Container from "@mui/material/Container"
 
@@ -20,7 +20,7 @@ const FaqsPage: NextPage<Props> = ({ faqs }) => {
     )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 
     const response = await fetch(`${process.env.URL_LOCAL}/api/faqs`)
     const faqs = await response.json()
