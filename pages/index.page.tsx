@@ -3,7 +3,8 @@ import Head from 'next/head'
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { getComics } from 'dh-marvel/services/marvel/marvel.service';
 import { Data } from 'interface/comic';
-import { Grid, Pagination } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Pagination from '@mui/material/Pagination';
 import { useRouter } from 'next/router';
 import { ComicBase } from 'dh-marvel/components/comics/comic.component';
 
@@ -32,7 +33,7 @@ const Index: NextPage<Props> = ({ data }) => {
             <BodySingle title={"Marvel Store"}>
                 <Grid container spacing={2}>
                     {data?.results?.map((item) => (
-                        <Grid item xs={3} key={item.id}>
+                        <Grid item xs={3} md={6} key={item.id}>
                             <ComicBase comic={item} />
                         </Grid>
                     ))}
