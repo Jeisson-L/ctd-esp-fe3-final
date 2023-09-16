@@ -7,6 +7,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { getComic } from "dh-marvel/services/marvel/marvel.service";
 import { Comic } from "interface/comic";
 import { ComicBase } from "dh-marvel/components/comics/comic.component";
+import { useRouter } from "next/router";
 
 interface Props {
     comic: Comic
@@ -14,6 +15,7 @@ interface Props {
 
 
 const ComicDetails: NextPage<Props> = ({ comic }) => {
+    const route = useRouter()
 
     const isInStock = (comic?.stock || 0) > 0;
     return (
@@ -44,7 +46,8 @@ const ComicDetails: NextPage<Props> = ({ comic }) => {
                             <ul>
                                 {comic?.characters.items?.map((character, index) => (
                                     <li key={index}>
-                                        <a href={character.resourceURI}>{character.name}</a>
+                                        <a href={route.basePath + "/personajes/" + character.resourceURI.split("/").pop()}>{character.name}</a>
+
                                     </li>
                                 ))}
                             </ul>
