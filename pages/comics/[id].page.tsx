@@ -1,10 +1,10 @@
 import Typography from "@mui/material/Typography"
 import CardContent from "@mui/material/CardContent"
-import CardMedia from "@mui/material/CardMedia"
-import Button from "@mui/material/Button"
+import Container from "@mui/material/Container"
+import Grid from "@mui/material/Grid"
 import Card from "@mui/material/Card";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { getComic, getComics } from "dh-marvel/services/marvel/marvel.service";
+import { GetServerSideProps, NextPage } from "next";
+import { getComic } from "dh-marvel/services/marvel/marvel.service";
 import { Comic } from "interface/comic";
 import { ComicBase } from "dh-marvel/components/comics/comic.component";
 
@@ -14,71 +14,63 @@ interface Props {
 
 
 const ComicDetails: NextPage<Props> = ({ comic }) => {
-    const handleBuyClick = () => {
-        // Código para realizar la compra
-    };
 
     const isInStock = (comic?.stock || 0) > 0;
-
     return (
-        <div>
-            <ComicBase comic={comic} ></ComicBase>
-            <Card sx={{ width: "auto", maxWidth: 500, padding: 1, marginBottom: 1, marginTop: 1 }}>
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        {comic?.textObjects[0]?.text}
-                    </Typography>
-                    <Typography variant="h6" component="div">
-                        Precio: ${comic?.price}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Precio anterior: ${comic?.oldPrice}
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={!isInStock}
-                        onClick={handleBuyClick}
-                    >
-                        {isInStock ? 'Comprar' : 'Sin stock disponible'}
-                    </Button>
-                    <Typography variant="h6" component="div">
-                        Personajes asociados:
-                    </Typography>
-                    <ul>
-                        {comic?.characters.items?.map((character, index) => (
-                            <li key={index}>
-                                <a href={character.resourceURI}>{character.name}</a>
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
-        </div>
+        <Container sx={{ maxWidth: 800 }}>
+            <Grid container spacing={1} >
+                <Grid item xs={12}>
+                    <Typography variant="h2" component="div" align="center">{comic?.title}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <ComicBase comic={comic} showDetailButton={false} isInStock={isInStock} ></ComicBase>
+                </Grid>
+                <Grid item xs={6}>
+                    <Card sx={{ maxWidth: 500, minWidth: 150, padding: 1, marginBottom: 1, marginTop: 1 }}>
+                        <CardContent>
+                            <Typography variant="body2" color="text.secondary" align="justify">
+                                {comic?.textObjects[0]?.text}
+                            </Typography>
+                            <Typography variant="h6" component="div">
+                                Precio: ${comic?.price}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Precio anterior: ${comic?.oldPrice}
+                            </Typography>
+                            {comic?.characters.items?.length > 0 && (
+                                <Typography variant="h6" component="div">
+                                    Personajes asociados:
+                                </Typography>)}
+                            <ul>
+                                {comic?.characters.items?.map((character, index) => (
+                                    <li key={index}>
+                                        <a href={character.resourceURI}>{character.name}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+        </Container >
     );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const comics = await getComics();
-    const paths = comics.data.results?.map((comic: Comic) => ({
-        params: { id: comic.id.toString() },
-    }));
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
+    const { id } = query;
 
-    return {
-        paths,
-        fallback: false,
-    };
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
-    const id = Number(context.params?.id);
-    const comic = await getComic(id)
+    res.setHeader(
+        'Cache-Control',
+        'public, s-maxage=10, stale-while-revalidate=59'
+    )
+    const comic = await getComic(Number(id))
 
     return {
         props: {
             comic
         }
     }
+
 }
 
 export default ComicDetails

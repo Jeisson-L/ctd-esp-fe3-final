@@ -13,7 +13,7 @@ describe('IndexPage', () => {
     describe('when rendering default', () => {
         it('should render the title', () => {
             render(<Index data={data} />)
-            const title = screen.getByText('Marvel Store')
+            const title = screen.getByText('Marvel Comics Store')
             expect(title).toBeInTheDocument()
         })
     })

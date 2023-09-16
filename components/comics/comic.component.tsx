@@ -10,14 +10,20 @@ import { useRouter } from "next/router"
 
 interface Props {
     comic: Comic
+    showDetailButton: boolean
+    isInStock: boolean
 }
 
-export const ComicBase: FC<Props> = ({ comic }) => {
+export const ComicBase: FC<Props> = ({ comic, showDetailButton, isInStock }) => {
 
     const router = useRouter();
 
     const handleMoreClick = () => {
         router.push(`/comics/${comic.id}`);
+    };
+
+    const handleBuyClick = () => {
+        // Código para realizar la compra
     };
 
     return (
@@ -35,12 +41,14 @@ export const ComicBase: FC<Props> = ({ comic }) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" color="primary">
-                        Comprar
+                    <Button variant="contained" disabled={!isInStock} onClick={handleBuyClick} color="primary">
+                        {isInStock ? 'Comprar' : 'Sin stock disponible'}
                     </Button>
-                    <Button onClick={handleMoreClick} size="small" variant="contained" color="secondary">
-                        Ver detalle
-                    </Button>
+                    {showDetailButton && (
+                        <Button onClick={handleMoreClick} variant="contained" color="secondary">
+                            Ver detalle
+                        </Button>)}
+
                 </CardActions>
             </Card>
         </>

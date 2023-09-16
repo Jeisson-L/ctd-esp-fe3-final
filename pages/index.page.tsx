@@ -30,19 +30,22 @@ const Index: NextPage<Props> = ({ data }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <BodySingle title={"Marvel Store"}>
+            <BodySingle title={"Marvel Comics Store"}>
                 <Grid container spacing={2}>
                     {data?.results?.map((item) => (
                         <Grid item xs={3} md={6} key={item.id}>
-                            <ComicBase comic={item} />
+                            <ComicBase comic={item} showDetailButton={true} isInStock={true} />
                         </Grid>
                     ))}
+                    <Grid item xs={12}>
+                        <Pagination
+                            count={Math.ceil((data?.total || 0) / PAGE_SIZE)}
+                            onChange={handlePageChange}
+                        />
+                    </Grid>
                 </Grid>
-                <Pagination
-                    count={Math.ceil((data?.total || 0) / PAGE_SIZE)}
-                    onChange={handlePageChange}
-                />
-            </BodySingle>
+
+            </BodySingle >
         </>
     )
 }
