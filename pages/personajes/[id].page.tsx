@@ -8,6 +8,7 @@ import { getCharacter, getComic } from "dh-marvel/services/marvel/marvel.service
 import { Character, Comic } from "interface/comic";
 import CardMedia from "@mui/material/CardMedia"
 import { useRouter } from "next/router";
+import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
 
 interface Props {
     character: Character
@@ -16,31 +17,33 @@ interface Props {
 
 const ComicDetails: NextPage<Props> = ({ character }) => {
     return (
-        <Container sx={{ maxWidth: 800 }}>
-            <Grid container spacing={1} >
-                <Grid item xs={12}>
-                    <Typography variant="h2" component="div" align="center">{character?.name}</Typography>
+        <LayoutGeneral>
+            <Container sx={{ maxWidth: 800 }}>
+                <Grid container spacing={1} >
+                    <Grid item xs={12}>
+                        <Typography variant="h2" component="div" align="center">{character?.name}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sx={{ alignItems: "center" }} display={"grid"} justifyItems={"center"}>
+                        <Card sx={{ width: "auto", maxWidth: 500, padding: 1, marginBottom: 1, marginTop: 1 }}>
+                            <CardMedia
+                                component="img"
+                                height="250"
+                                image={character?.thumbnail.path.concat(".", character?.thumbnail.extension)}
+                                alt={character?.name}
+                            />
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    {character?.name}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {character?.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} sx={{ alignItems: "center" }} display={"grid"} justifyItems={"center"}>
-                    <Card sx={{ width: "auto", maxWidth: 500, padding: 1, marginBottom: 1, marginTop: 1 }}>
-                        <CardMedia
-                            component="img"
-                            height="250"
-                            image={character?.thumbnail.path.concat(".", character?.thumbnail.extension)}
-                            alt={character?.name}
-                        />
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                {character?.name}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {character?.description}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
-        </Container >
+            </Container >
+        </LayoutGeneral>
     );
 }
 
