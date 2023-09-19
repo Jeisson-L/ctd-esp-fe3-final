@@ -2,13 +2,13 @@ import Typography from "@mui/material/Typography"
 import CardContent from "@mui/material/CardContent"
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
-import Card from "@mui/material/Card";
 import { GetServerSideProps, NextPage } from "next";
 import { getComic } from "dh-marvel/services/marvel/marvel.service";
 import { Comic } from "interface/comic";
 import { ComicBase } from "dh-marvel/components/comics/comic.component";
 import { useRouter } from "next/router";
 import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
+import { DetailComic } from "dh-marvel/components/comics/detailComic.component";
 
 interface Props {
     comic: Comic
@@ -26,35 +26,11 @@ const ComicDetails: NextPage<Props> = ({ comic }) => {
                     <Grid item xs={12}>
                         <Typography variant="h2" component="div" align="center">{comic?.title}</Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <ComicBase comic={comic} showDetailButton={false} isInStock={isInStock} ></ComicBase>
+                    <Grid item xs={12}>
+                        <ComicBase comic={comic} showDetailButton={false} isInStock={isInStock} showBuyButton={false} ></ComicBase>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Card sx={{ maxWidth: 500, minWidth: 150, padding: 1, marginBottom: 1, marginTop: 1 }}>
-                            <CardContent>
-                                <Typography variant="body2" color="text.secondary" align="justify">
-                                    {comic?.textObjects[0]?.text}
-                                </Typography>
-                                <Typography variant="h6" component="div">
-                                    Precio: ${comic?.price}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Precio anterior: ${comic?.oldPrice}
-                                </Typography>
-                                {comic?.characters.items?.length > 0 && (
-                                    <Typography variant="h6" component="div">
-                                        Personajes asociados:
-                                    </Typography>)}
-                                <ul>
-                                    {comic?.characters.items?.map((character, index) => (
-                                        <li key={index}>
-                                            <a href={route.basePath + "/personajes/" + character.resourceURI.split("/").pop()}>{character.name}</a>
-
-                                        </li>
-                                    ))}
-                                </ul>
-                            </CardContent>
-                        </Card>
+                    <Grid item xs={12}>
+                        <DetailComic comic={comic}></DetailComic>
                     </Grid>
                 </Grid>
             </Container >

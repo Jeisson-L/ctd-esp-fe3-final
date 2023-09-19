@@ -9,21 +9,22 @@ import { FC } from "react";
 import { useRouter } from "next/router"
 
 interface Props {
-    comic: Comic
+    comic?: Comic
     showDetailButton: boolean
     isInStock: boolean
+    showBuyButton: boolean
 }
 
-export const ComicBase: FC<Props> = ({ comic, showDetailButton, isInStock }) => {
+export const ComicBase: FC<Props> = ({ comic, showDetailButton, isInStock, showBuyButton }) => {
 
     const router = useRouter();
 
     const handleMoreClick = () => {
-        router.push(`/comics/${comic.id}`);
+        router.push(`/comics/${comic?.id}`);
     };
 
     const handleBuyClick = () => {
-        // Código para realizar la compra
+        router.push(`/checkout?comicId=${comic?.id}`);
     };
 
     return (
@@ -33,17 +34,18 @@ export const ComicBase: FC<Props> = ({ comic, showDetailButton, isInStock }) => 
                     component="img"
                     height="250"
                     image={comic?.thumbnail.path.concat(".", comic?.thumbnail.extension)}
-                    alt={comic.title}
+                    alt={comic?.title}
                 />
                 <CardContent>
                     <Typography variant="h5" component="div">
-                        {comic.title}
+                        {comic?.title}
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" disabled={!isInStock} onClick={handleBuyClick} color="primary">
-                        {isInStock ? 'Comprar' : 'Sin stock disponible'}
-                    </Button>
+                    {showBuyButton && (
+                        <Button variant="contained" disabled={!isInStock} onClick={handleBuyClick} color="primary">
+                            {isInStock ? 'Comprar' : 'Sin stock disponible'}
+                        </Button>)}
                     {showDetailButton && (
                         <Button onClick={handleMoreClick} variant="contained" color="secondary">
                             Ver detalle

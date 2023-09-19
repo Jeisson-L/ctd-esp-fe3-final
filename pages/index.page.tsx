@@ -35,7 +35,7 @@ const Index: NextPage<Props> = ({ data }) => {
                 <Grid container spacing={2}>
                     {data?.results?.map((item) => (
                         <Grid item xs={3} md={6} key={item.id}>
-                            <ComicBase comic={item} showDetailButton={true} isInStock={true} />
+                            <ComicBase comic={item} showDetailButton={true} isInStock={true} showBuyButton={true} />
                         </Grid>
                     ))}
                     <Grid item xs={12}>

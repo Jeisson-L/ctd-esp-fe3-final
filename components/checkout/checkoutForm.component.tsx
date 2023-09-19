@@ -42,19 +42,17 @@ export const CheckoutForm: FC = () => {
     const steps = ['Datos Personales', 'Dirección de Entrega', 'Datos del Pago'];
 
     return (
-        <LayoutCheckout>
-            <Container sx={{ maxWidth: "xl" }} >
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {steps.map((label) => (
-                        <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
-                        </Step>
-                    ))}
-                </Stepper>
-                <div>
-                    {getStepContent(activeStep)}
-                </div>
-            </Container>
-        </LayoutCheckout>
+        <Container sx={{ maxWidth: "xl" }} >
+            <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map((label) => (
+                    <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+            <div>
+                {getStepContent(activeStep)}
+            </div>
+        </Container>
     )
 }
