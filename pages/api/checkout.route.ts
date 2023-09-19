@@ -1,5 +1,5 @@
-import type {NextApiRequest, NextApiResponse} from 'next';
-import {CheckoutInput} from "dh-marvel/features/checkout/checkout.types";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 import {
     ERROR_CARD_DATA_INCORRECT,
     ERROR_CARD_WITHOUT_AUTHORIZATION,
@@ -11,9 +11,9 @@ import {
 
 const serverError = 'error'
 export const invalidAddress = 'invalid'
-export const validCard = '4242 4242 4242 4242'.replace(" ", "");
-export const withoutFundsCard = '4111 4111 4111 4111'.replace(" ", "");
-export const withoutAuthorizationCard = '4000 4000 4000 4000'.replace(" ", "");
+export const validCard = '4242424242424242'
+export const withoutFundsCard = '4111411141114111'
+export const withoutAuthorizationCard = '4000400040004000'
 
 type Data = {
     data: any;
@@ -44,7 +44,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
             return
         }
         if (body.card.number === validCard) {
-            res.status(200).json({data: body});
+            res.status(200).json({ data: body });
             return
         }
         res.status(400).json(ERROR_CARD_DATA_INCORRECT);

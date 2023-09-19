@@ -102,6 +102,7 @@ export const PayDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previusActi
                                 type="text"
                                 label="Fecha de expiración"
                                 variant="outlined"
+                                placeholder="mm/aa"
                                 fullWidth
                                 sx={{ mb: 2 }}
                                 error={errors.expirationDate ? true : false}
@@ -120,7 +121,7 @@ export const PayDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previusActi
                             <TextField
                                 {...register("cvc")}
                                 {...field}
-                                type="text"
+                                type="password"
                                 label="CVC"
                                 variant="outlined"
                                 fullWidth

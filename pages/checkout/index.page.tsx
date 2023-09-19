@@ -36,20 +36,23 @@ export default function Checkout() {
                     <Typography align="center" variant="h2">
                         Checkout
                     </Typography>
-                    <CheckoutForm />
-                    <Grid container spacing={1} >
-                        <Grid item xs={12}>
-                            <Typography variant="h2" component="div" align="center">{comic?.title}</Typography>
+                    <Grid container spacing={1} display={"flex"} flexDirection={"row"}>
+                        <Grid item xs={6}>
+                            <CheckoutForm />
                         </Grid>
-                        <Grid item xs={12}>
-                            <ComicBase comic={comic} showDetailButton={false} isInStock={false} showBuyButton={false} ></ComicBase>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <DetailComic comic={comic}></DetailComic>
+                        <Grid item xs={6}>
+                            <Grid container spacing={1} display={"flex"} flexDirection={"column"} xs={12} >
+                                <Grid item xs={12}>
+                                    <ComicBase comic={comic} showDetailButton={false} isInStock={false} showBuyButton={false} ></ComicBase>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <DetailComic comic={comic}></DetailComic>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Container>
-            </LayoutCheckout>
+            </LayoutCheckout >
         </>
     )
 }
