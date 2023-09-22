@@ -10,33 +10,32 @@ import { Grid } from "@mui/material";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from "react-hook-form";
 import { schemaPayData } from "rules";
+import { CheckoutDataForm, PayData } from "dh-marvel/features/checkout/checkout.types";
+import { CheckoutForm } from "interface/checkoutForm";
 
-interface PaylData {
-    cardNumber: string,
-    cardName: string,
-    expirationDate: string,
-    cvc: string,
-}
-
-export const PayDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previusAction, defaultValues }) => {
+export const PayDataForm: FC<CheckoutForm> = ({ saveDataOnSubmit, nextAction, previusAction, defaultValues }) => {
     const {
         control,
         formState: { errors },
         handleSubmit,
         watch,
         register
-    } = useForm<PaylData>({ resolver: yupResolver(schemaPayData), defaultValues });
+    } = useForm<PayData>({ resolver: yupResolver(schemaPayData), defaultValues });
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: PayData) => {
         saveDataOnSubmit(data);
-        nextAction();
+        nextAction && nextAction(data);
+    };
+
+    const handlePrevius = () => {
+        previusAction && previusAction();
     };
 
     return (<>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid display={"flex"} alignItems={"center"} justifyItems={"space-around"}>
-                <div className="credit-card-container" style={{ padding: "20px" }}>
+            <Grid display={"flex"} alignItems={"center"} justifyItems={"space-around"} flexDirection={"column"}>
+                <div className="credit-card-container" style={{ paddingTop: "20px" }}>
                     <Card
                         number={watch("cardNumber", '')}
                         name={watch("cardName", '')}
@@ -131,7 +130,7 @@ export const PayDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previusActi
                         )}
                     />
                     <Grid display={"flex"} justifyContent={"space-between"}>
-                        <Button onClick={previusAction}>Atrás</Button>
+                        <Button onClick={handlePrevius}>Atrás</Button>
                         <Button type="submit">Finalizar</Button>
                     </Grid>
                 </div>

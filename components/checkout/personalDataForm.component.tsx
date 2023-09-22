@@ -7,14 +7,10 @@ import { ErrorMessage } from '@hookform/error-message';
 import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button'
 import { Grid } from "@mui/material";
+import { PersonalData } from "dh-marvel/features/checkout/checkout.types";
+import { CheckoutForm } from "interface/checkoutForm";
 
-interface PersonalData {
-    name: string;
-    lastName: string;
-    email: string;
-}
-
-export const PersonalDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, defaultValues }) => {
+export const PersonalDataForm: FC<CheckoutForm> = ({ saveDataOnSubmit, nextAction, defaultValues }) => {
     const {
         control,
         formState: { errors },
@@ -23,7 +19,7 @@ export const PersonalDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, defaul
 
     const onSubmit = (data: any) => {
         saveDataOnSubmit(data);
-        nextAction();
+        nextAction && nextAction(data);
     };
 
     return (

@@ -7,25 +7,23 @@ import { ErrorMessage } from '@hookform/error-message';
 import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button'
 import { Grid } from "@mui/material";
+import { ShippingData } from "dh-marvel/features/checkout/checkout.types";
+import { CheckoutForm } from "interface/checkoutForm";
 
-interface ShippingData {
-    address: string;
-    department?: string
-    city: string;
-    state: string;
-    postalCode: string;
-}
-
-export const ShippingDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previusAction, defaultValues }) => {
+export const ShippingDataForm: FC<CheckoutForm> = ({ saveDataOnSubmit, nextAction, previusAction, defaultValues }) => {
     const {
         control,
         formState: { errors },
         handleSubmit,
     } = useForm<ShippingData>({ resolver: yupResolver(schemaShippingData), defaultValues });
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: ShippingData) => {
         saveDataOnSubmit(data);
-        nextAction();
+        nextAction && nextAction();
+    };
+
+    const handlePrevius = () => {
+        previusAction && previusAction();
     };
 
     return (
@@ -52,7 +50,7 @@ export const ShippingDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previu
             />
 
             <Controller
-                name="department"
+                name="address2"
                 control={control}
                 defaultValue={""}
                 rules={{ required: true }}
@@ -64,7 +62,7 @@ export const ShippingDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previu
                         variant="outlined"
                         fullWidth
                         sx={{ mb: 2 }}
-                        error={errors.department ? true : false}
+                        error={errors.address2 ? true : false}
                     />
                 )}
             />
@@ -112,10 +110,10 @@ export const ShippingDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previu
             />
 
             <Typography variant="caption" color="red">
-                <ErrorMessage errors={errors} name="postalCode" />
+                <ErrorMessage errors={errors} name="zipCode" />
             </Typography>
             <Controller
-                name="postalCode"
+                name="zipCode"
                 control={control}
                 defaultValue={""}
                 rules={{ required: true }}
@@ -127,12 +125,12 @@ export const ShippingDataForm: FC<any> = ({ saveDataOnSubmit, nextAction, previu
                         variant="outlined"
                         fullWidth
                         sx={{ mb: 2 }}
-                        error={errors.postalCode ? true : false}
+                        error={errors.zipCode ? true : false}
                     />
                 )}
             />
             <Grid display={"flex"} justifyContent={"space-between"}>
-                <Button onClick={previusAction}>Atrás</Button>
+                <Button onClick={handlePrevius}>Atrás</Button>
                 <Button type="submit">Siguiente</Button>
             </Grid>
         </form>
