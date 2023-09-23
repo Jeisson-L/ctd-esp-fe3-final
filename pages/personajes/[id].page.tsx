@@ -4,18 +4,22 @@ import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
 import Card from "@mui/material/Card";
 import { GetServerSideProps, NextPage } from "next";
-import { getCharacter, getComic } from "dh-marvel/services/marvel/marvel.service";
+import { getCharacter, getComic, getComicsOfCharacter } from "dh-marvel/services/marvel/marvel.service";
 import { Character, Comic } from "interface/comic";
 import CardMedia from "@mui/material/CardMedia"
 import { useRouter } from "next/router";
 import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
+import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
+import { ComicBase } from "dh-marvel/components/comics/comic.component";
 
 interface Props {
     character: Character
+    comics: Comic[]
 }
 
 
-const ComicDetails: NextPage<Props> = ({ character }) => {
+const ComicDetails: NextPage<Props> = ({ character, comics }) => {
+
     return (
         <LayoutGeneral>
             <Container sx={{ maxWidth: 800 }}>
@@ -42,6 +46,16 @@ const ComicDetails: NextPage<Props> = ({ character }) => {
                         </Card>
                     </Grid>
                 </Grid>
+                <BodySingle title={"Otros Comics de " + character?.name}>
+                    <Grid container spacing={2}>
+                        {comics?.map((item) => (
+                            <Grid item xs={6} md={4} sm={6} key={item.id}>
+                                <ComicBase comic={item} showDetailButton={true} isInStock={true} showBuyButton={true} />
+                            </Grid>
+                        ))}
+
+                    </Grid>
+                </BodySingle>
             </Container >
         </LayoutGeneral>
     );
@@ -55,9 +69,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
         'public, s-maxage=10, stale-while-revalidate=59'
     )
     const character = await getCharacter(Number(id))
+    const comics = await getComicsOfCharacter(Number(id))
+
     return {
         props: {
-            character
+            character,
+            comics
         }
     }
 

@@ -41,15 +41,22 @@ const Index: NextPage<Props> = ({ data }) => {
                         shape="rounded"
                     />
                 </Grid>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} display={"flex"} >
                     {data?.results?.map((item) => (
-                        <Grid item xs={3} md={3} sm={6} key={item.id}>
+                        <Grid item xs={12} md={3} sm={6} key={item.id} display={"flex"} justifyContent={"center"}>
                             <ComicBase comic={item} showDetailButton={true} isInStock={true} showBuyButton={true} />
                         </Grid>
                     ))}
 
                 </Grid>
-
+                <Grid item xs={12} sx={{ alignSelf: "flex-end" }}>
+                    <Pagination
+                        count={Math.ceil((data?.total || 0) / PAGE_SIZE)}
+                        onChange={handlePageChange}
+                        variant="outlined"
+                        shape="rounded"
+                    />
+                </Grid>
             </BodySingle >
         </LayoutGeneral>
     )

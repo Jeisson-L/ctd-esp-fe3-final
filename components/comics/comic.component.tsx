@@ -29,7 +29,7 @@ export const ComicBase: FC<Props> = ({ comic, showDetailButton, isInStock, showB
 
     return (
         <>
-            <Card sx={{ width: "auto", maxWidth: 500, padding: 1, marginBottom: 1, marginTop: 1 }}>
+            <Card sx={{ width: 360, maxWidth: 360, padding: 1, marginBottom: 1, marginTop: 1 }}>
                 <CardMedia
                     component="img"
                     height="250"

@@ -22,14 +22,14 @@ const ComicDetails: NextPage<Props> = ({ comic }) => {
     return (
         <LayoutGeneral>
             <Container sx={{ maxWidth: 800 }}>
-                <Grid container spacing={1} >
-                    <Grid item xs={12}>
+                <Grid container spacing={1} display={"flex"} >
+                    <Grid item xs={12} md={12} sm={12}>
                         <Typography variant="h2" component="div" align="center">{comic?.title}</Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6} sm={12} display={"flex"} justifyContent={"center"}>
                         <ComicBase comic={comic} showDetailButton={false} isInStock={isInStock} showBuyButton={true} ></ComicBase>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6} sm={12} display={"flex"} justifyContent={"center"}>
                         <DetailComic comic={comic}></DetailComic>
                     </Grid>
                 </Grid>
