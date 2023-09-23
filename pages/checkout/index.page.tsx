@@ -34,20 +34,20 @@ export default function Checkout() {
     return (
         <>
             <LayoutCheckout>
-                <Container maxWidth="md">
+                <Container maxWidth="xl">
                     <Typography align="center" variant="h2">
                         Checkout
                     </Typography>
-                    <Grid container spacing={1} display={"flex"} flexDirection={"row"}>
+                    <Grid container spacing={1} display={"flex"} flexDirection={"row"} justifyContent={"center"}>
                         {isInStock && (
-                            <Grid item xs={6}>
+                            <Grid item >
 
-                                <Paper elevation={8} sx={{ p: "32px" }}>
+                                <Paper elevation={8} sx={{ p: "32px", maxWidth: 500 }}>
                                     <CheckoutForm comic={comic} ></CheckoutForm>
                                 </Paper>
                             </Grid>
                         )}
-                        <Grid item xs={6}>
+                        <Grid item >
                             <Grid container spacing={1} display={"flex"} flexDirection={"column"} >
                                 <Grid item xs={12}>
                                     <ComicBase comic={comic} showDetailButton={false} isInStock={false} showBuyButton={!isInStock} ></ComicBase>
