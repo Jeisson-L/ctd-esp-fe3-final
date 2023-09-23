@@ -23,6 +23,7 @@ const Index: NextPage<Props> = ({ data }) => {
         router.push(`/?page=${page}`)
     };
 
+
     return (
         <LayoutGeneral>
             <Head>
@@ -32,18 +33,21 @@ const Index: NextPage<Props> = ({ data }) => {
             </Head>
 
             <BodySingle title={"Marvel Comics Store"}>
+                <Grid item xs={12} sx={{ alignSelf: "flex-end" }}>
+                    <Pagination
+                        count={Math.ceil((data?.total || 0) / PAGE_SIZE)}
+                        onChange={handlePageChange}
+                        variant="outlined"
+                        shape="rounded"
+                    />
+                </Grid>
                 <Grid container spacing={2}>
                     {data?.results?.map((item) => (
-                        <Grid item xs={3} md={6} key={item.id}>
+                        <Grid item xs={3} md={3} sm={6} key={item.id}>
                             <ComicBase comic={item} showDetailButton={true} isInStock={true} showBuyButton={true} />
                         </Grid>
                     ))}
-                    <Grid item xs={12}>
-                        <Pagination
-                            count={Math.ceil((data?.total || 0) / PAGE_SIZE)}
-                            onChange={handlePageChange}
-                        />
-                    </Grid>
+
                 </Grid>
 
             </BodySingle >

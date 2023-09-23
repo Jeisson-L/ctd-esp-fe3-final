@@ -29,6 +29,8 @@ export default function Checkout() {
         comicId && fetchComic(Number(comicId))
     }, [comicId])
 
+    const isInStock = (comic?.stock || 0) > 0;
+
     return (
         <>
             <LayoutCheckout>
@@ -37,15 +39,18 @@ export default function Checkout() {
                         Checkout
                     </Typography>
                     <Grid container spacing={1} display={"flex"} flexDirection={"row"}>
-                        <Grid item xs={6}>
-                            <Paper elevation={8} sx={{ p: "32px" }}>
-                                <CheckoutForm comic={comic} ></CheckoutForm>
-                            </Paper>
-                        </Grid>
+                        {isInStock && (
+                            <Grid item xs={6}>
+
+                                <Paper elevation={8} sx={{ p: "32px" }}>
+                                    <CheckoutForm comic={comic} ></CheckoutForm>
+                                </Paper>
+                            </Grid>
+                        )}
                         <Grid item xs={6}>
                             <Grid container spacing={1} display={"flex"} flexDirection={"column"} >
                                 <Grid item xs={12}>
-                                    <ComicBase comic={comic} showDetailButton={false} isInStock={false} showBuyButton={false} ></ComicBase>
+                                    <ComicBase comic={comic} showDetailButton={false} isInStock={false} showBuyButton={!isInStock} ></ComicBase>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <DetailComic comic={comic}></DetailComic>

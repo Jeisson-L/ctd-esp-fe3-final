@@ -15,5 +15,5 @@ export const fetchCheckoutApi = async (data: CheckoutInput) => {
 
     const url = `/api/checkout`
     const response = await fetch(url, options);
-    return await response.json();
+    return await response;
 }

@@ -1,6 +1,19 @@
+import { removeCookie } from 'dh-marvel/features/checkout/checkout.utils';
 import { Html, Head, Main, NextScript } from 'next/document'
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Document() {
+    const router = useRouter();
+
+    useEffect(() => {
+        const { pathname } = router;
+
+        if (!pathname.toLowerCase().includes("confirmacion-compra")) {
+            removeCookie('paymentCookie')
+        }
+    })
+
     return (
         <Html style={{ height: '100%' }}>
             <title> Marvel Store </title>

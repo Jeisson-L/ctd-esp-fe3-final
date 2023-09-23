@@ -7,11 +7,12 @@ import StepLabel from "@mui/material/StepLabel";
 import { ShippingDataForm } from './shippingDataForm.component';
 import { PersonalDataForm } from './personalDataForm.component';
 import { PayDataForm } from './payDataForm.component';
-import confetti from 'canvas-confetti'
 import { CheckoutDataForm, CheckoutInput } from 'dh-marvel/features/checkout/checkout.types';
-import { createCheckoutInput, defaultCheckoutDataForm } from 'dh-marvel/features/checkout/checkout.utils';
+import { createCheckoutInput, defaultCheckoutDataForm, normalizeCheoutInfoToSend } from 'dh-marvel/features/checkout/checkout.utils';
 import { Comic } from 'interface/comic';
 import { fetchCheckoutApi } from 'dh-marvel/services/checkout/checkout.service';
+import { Alert, Snackbar } from '@mui/material';
+import { useRouter } from 'next/router';
 
 interface Props {
     comic?: Comic
@@ -19,42 +20,49 @@ interface Props {
 
 export const CheckoutForm: FC<Props> = ({ comic }) => {
     const defaultValues = defaultCheckoutDataForm();
+    const router = useRouter();
     const [activeStep, setActiveStep] = useState(0);
     const [dataForm, setDataForm] = useState(defaultValues);
+    const [apiMessage, setApiMessage] = useState("")
 
     const saveData = (data: Object) => {
         setDataForm({ ...dataForm, ...data })
     }
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const handleNext = () => { setActiveStep((prevActiveStep) => prevActiveStep + 1); };
 
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    const handleBack = () => { setActiveStep((prevActiveStep) => prevActiveStep - 1); };
 
     const handleFinalizePurchase = async (data: object) => {
-        const complitedData = { ...dataForm, ...data }
-        complitedData.orderName = comic ? comic.title : ""
-        complitedData.orderImage = comic ? comic.thumbnail.path + comic.thumbnail.extension : ""
-        complitedData.orederPrice = comic ? comic.price.toString() : ""
+
+        const complitedData = normalizeCheoutInfoToSend(dataForm, data, comic);
         const checkoutInput: CheckoutInput = createCheckoutInput(complitedData as CheckoutDataForm)
+        const apiResponse = await fetchCheckoutApi(checkoutInput)
+        const bodyResponse = await apiResponse.json()
 
+        if (apiResponse.ok) {
+            routeToConfirmationPage(bodyResponse);
+        } else {
+            setApiMessage(bodyResponse.message as string);
+        }
+    }
 
-        const res = await fetchCheckoutApi(checkoutInput)
-        console.log(res)
-        confetti({
-            zIndex: 999,
-            particleCount: 100,
-            spread: 160,
-            angle: -100,
-            origin: {
-                x: 1,
-                y: 0,
+    const routeToConfirmationPage = (bodyResponse: any) => {
+        document.cookie = "paymentCookie=true; path=/"
+
+        router.push(
+            {
+                pathname: "/confirmacion-compra",
+                query: {
+                    comicName: bodyResponse.data.order.name,
+                    comicImage: bodyResponse.data.order.image,
+                    comicPrice: bodyResponse.data.order.price,
+                    customerName: bodyResponse.data.customer.name,
+                    addressShipping: bodyResponse.data.customer.address.address1,
+                },
             },
-        });
+            "/confirmacion-compra"
+        );
     }
 
     const getStepContent = (stepIndex: number) => {
@@ -83,6 +91,13 @@ export const CheckoutForm: FC<Props> = ({ comic }) => {
             </Stepper>
             <div>
                 {getStepContent(activeStep)}
+            </div>
+            <div>
+                <Snackbar open={!!apiMessage} autoHideDuration={6000} onClose={() => { setApiMessage("") }}>
+                    <Alert onClose={() => { setApiMessage("") }} severity="error" sx={{ width: '100%' }}>
+                        {apiMessage}
+                    </Alert>
+                </Snackbar>
             </div>
         </Container>
     )

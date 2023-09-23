@@ -27,7 +27,7 @@ const ComicDetails: NextPage<Props> = ({ comic }) => {
                         <Typography variant="h2" component="div" align="center">{comic?.title}</Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <ComicBase comic={comic} showDetailButton={false} isInStock={isInStock} showBuyButton={false} ></ComicBase>
+                        <ComicBase comic={comic} showDetailButton={false} isInStock={isInStock} showBuyButton={true} ></ComicBase>
                     </Grid>
                     <Grid item xs={12}>
                         <DetailComic comic={comic}></DetailComic>
